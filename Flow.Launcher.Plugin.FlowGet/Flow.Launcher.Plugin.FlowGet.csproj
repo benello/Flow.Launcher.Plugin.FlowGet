@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0-windows</TargetFramework>
+        <AssemblyName>Flow.Launcher.Plugin.FlowGet</AssemblyName>
+        <PackageId>Flow.Launcher.Plugin.FlowGet</PackageId>
+        <Authors>benello</Authors>
+        <PackageProjectUrl>https://github.com/benello/Flow.Launcher.Plugin.FlowGet</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/benello/Flow.Launcher.Plugin.FlowGet</RepositoryUrl>
+        <PackageTags>flow-launcher flow-plugin</PackageTags>
+        <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+        <DebugSymbols>false</DebugSymbols>
+        <DebugType>None</DebugType>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Content Include="plugin.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Flow.Launcher.Plugin" Version="5.1.0"/>
+        <PackageReference Include="WGet.NET" Version="4.4.1"/>
+    </ItemGroup>
+
+</Project>

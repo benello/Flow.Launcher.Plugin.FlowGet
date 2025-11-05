@@ -1,0 +1,13 @@
+﻿root = true
+
+[*.cs]
+indent_style = tab
+indent_size = 4
+end_of_line = crlf
+insert_final_newline = true
+
+# Remove unused usings warning level
+dotnet_diagnostic.IDE0005.severity = warning
+
+[csharp]
+new_line_before_open_brace = all
