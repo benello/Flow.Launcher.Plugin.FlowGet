@@ -7,6 +7,6 @@
   "Version": "1.0.0",
   "Language": "csharp",
   "Website": "https://github.com/benello/Flow.Launcher.Plugin.FlowGet",
-  "IcoPath": "icon.png",
+  "IcoPath": "assets/icon.png",
   "ExecuteFileName": "Flow.Launcher.Plugin.FlowGet.dll"
 }

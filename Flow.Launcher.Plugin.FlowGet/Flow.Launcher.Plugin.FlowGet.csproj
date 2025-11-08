@@ -20,8 +20,12 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <Content Include="..\assets\icon.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+          <Link>assets\icon.png</Link>
+        </Content>
         <Content Include="plugin.json">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
     </ItemGroup>
 
