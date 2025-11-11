@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -25,6 +25,11 @@ internal class PackageOperations(WinGetPackageManager packageManager, ResultFact
 		return results;
 	}
 
+	/// <summary>
+	/// Locates a package by id and returns the install options for it.
+	/// </summary>
+	/// <param name="id">Package identifier to search for; if null or empty, the EmptyInstall sentinel is returned.</param>
+	/// <returns>A list of Result containing an installable entry for the found package; a single Result with Title "Package not found" if no package matches; or ResultFactory.EmptyInstall when <paramref name="id"/> is null or empty.</returns>
 	public async Task<List<Result>> InstallAsync(string? id, CancellationToken cancellation)
 	{
 		if (string.IsNullOrEmpty(id))
@@ -49,6 +54,12 @@ internal class PackageOperations(WinGetPackageManager packageManager, ResultFact
 		return results;
 	}
 
+	/// <summary>
+	/// Produces results describing available package updates, optionally filtered by name.
+	/// </summary>
+	/// <param name="param">An optional case-insensitive substring to filter package names. If null or empty, the results include an UpdateAll entry.</param>
+	/// <param name="cancellation">A token to cancel the operation.</param>
+	/// <returns>A list of Result entries for upgradeable packages. When no packages match, returns a list containing a single Result with Title = "No packages found".</returns>
 	public async Task<List<Result>> UpdateAsync(string? param, CancellationToken cancellation)
 	{
 		List<Result> results = [];
