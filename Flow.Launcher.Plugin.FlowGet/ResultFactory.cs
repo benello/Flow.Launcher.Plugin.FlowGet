@@ -13,7 +13,7 @@ internal class ResultFactory(UiExecutor ui, WinGetPackageManager packageManager)
 		new()
 		{
 			Title = "Commands",
-			SubTitle = "Commands: search <term> | install <id> | uninstall [<id>] | update [all] | help"
+			SubTitle = "Commands: search <term> | install <id> | uninstall [<id>] | update [all]"
 		}
 	];
 
@@ -30,6 +30,14 @@ internal class ResultFactory(UiExecutor ui, WinGetPackageManager packageManager)
 		new()
 		{
 			Title = "Please specify a package ID"
+		}
+	];
+
+	public static readonly List<Result> NoResults =
+	[
+		new()
+		{
+			Title = "No results found"
 		}
 	];
 

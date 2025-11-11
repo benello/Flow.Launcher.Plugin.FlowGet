@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -27,7 +28,7 @@ internal class PackageOperations(WinGetPackageManager packageManager, ResultFact
 	public async Task<List<Result>> InstallAsync(string? id, CancellationToken cancellation)
 	{
 		if (string.IsNullOrEmpty(id))
-			return ResultFactory.EmptySearch;
+			return ResultFactory.EmptyInstall;
 
 		var pkg = (await _packageManager.SearchPackageAsync(id, true, cancellation)).FirstOrDefault();
 		return pkg is not null
@@ -50,19 +51,18 @@ internal class PackageOperations(WinGetPackageManager packageManager, ResultFact
 
 	public async Task<List<Result>> UpdateAsync(string? param, CancellationToken cancellation)
 	{
-		if (string.IsNullOrEmpty(param))
-		{
-			return
-			[
-				_resultFactory.UpdateAll()
-			];
-		}
-
-		var packages = await _packageManager.GetUpgradeablePackagesAsync(cancellation);
 		List<Result> results = [];
+		var packages = await _packageManager.GetUpgradeablePackagesAsync(cancellation);
 
-		if (packages.Count != 0)
+		if (!string.IsNullOrEmpty(param))
+			// A filter is active: find matching packages
+			packages = packages.Where(pkg => pkg.Name.Contains(param, StringComparison.OrdinalIgnoreCase)).ToList();
+		else if (packages.Count != 0)
+			// otherwise add an option to upgrade all
 			results.Add(_resultFactory.UpdateAll());
+
+		if (packages.Count == 0)
+			return ResultFactory.NoResults;
 
 		foreach (var pkg in packages)
 			results.Add(_resultFactory.Upgradable(pkg));
