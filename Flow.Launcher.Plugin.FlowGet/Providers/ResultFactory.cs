@@ -4,7 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using WGetNET;
 
-namespace Flow.Launcher.Plugin.FlowGet;
+namespace Flow.Launcher.Plugin.FlowGet.Providers;
 
 internal class ResultFactory(UiExecutor ui, WinGetPackageManager packageManager)
 {
@@ -16,6 +16,15 @@ internal class ResultFactory(UiExecutor ui, WinGetPackageManager packageManager)
 			SubTitle = "Commands: search <term> | install <id> | uninstall [<id>] | update [all]"
 		}
 	];
+
+	public static Result AdminWarningBanner => new()
+	{
+		Title = "Administrator privileges may be required",
+		SubTitle = "Some operations may require elevated permissions to execute successfully",
+		Score = int.MaxValue,
+		Action = _ => false,
+		IcoPath = "Images/warning.png"
+	};
 
 	public static readonly List<Result> EmptySearch =
 	[
@@ -97,7 +106,7 @@ internal class ResultFactory(UiExecutor ui, WinGetPackageManager packageManager)
 			{
 				_ui.Schedule(opName, operation, success, failure);
 				return true;
-			}
+			},
 		};
 	}
 }

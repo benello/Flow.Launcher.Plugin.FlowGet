@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Flow.Launcher.Plugin.FlowGet.Providers;
 using WGetNET;
 
 namespace Flow.Launcher.Plugin.FlowGet;

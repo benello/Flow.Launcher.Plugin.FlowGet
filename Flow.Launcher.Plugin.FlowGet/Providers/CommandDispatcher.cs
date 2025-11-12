@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Flow.Launcher.Plugin.FlowGet;
+namespace Flow.Launcher.Plugin.FlowGet.Providers;
 
 internal class CommandDispatcher
 {

@@ -5,7 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using WGetNET;
 
-namespace Flow.Launcher.Plugin.FlowGet;
+namespace Flow.Launcher.Plugin.FlowGet.Providers;
 
 internal class PackageOperations(WinGetPackageManager packageManager, ResultFactory resultFactory)
 {
@@ -19,6 +19,9 @@ internal class PackageOperations(WinGetPackageManager packageManager, ResultFact
 
 		List<Result> results = [];
 
+		if (!SystemHelper.CheckAdministratorPrivileges())
+			results.Add(ResultFactory.AdminWarningBanner);
+
 		foreach (var pkg in await _packageManager.SearchPackageAsync(term, cancellationToken: cancellation))
 			results.Add(_resultFactory.Installable(pkg));
 
@@ -31,9 +34,17 @@ internal class PackageOperations(WinGetPackageManager packageManager, ResultFact
 			return ResultFactory.EmptyInstall;
 
 		var pkg = (await _packageManager.SearchPackageAsync(id, true, cancellation)).FirstOrDefault();
-		return pkg is not null
-			? new List<Result> { _resultFactory.Installable(pkg) }
-			: new List<Result> { new() { Title = "Package not found" } };
+		var results = new List<Result>();
+
+		if (!SystemHelper.CheckAdministratorPrivileges())
+			results.Add(ResultFactory.AdminWarningBanner);
+
+		if (pkg is not null)
+			results.Add(_resultFactory.Installable(pkg));
+		else
+			results.Add(new Result { Title = "Package not found" });
+
+		return results;
 	}
 
 	public async Task<List<Result>> UninstallAsync(string? id, CancellationToken cancellation)
@@ -43,6 +54,10 @@ internal class PackageOperations(WinGetPackageManager packageManager, ResultFact
 			: await _packageManager.GetInstalledPackagesAsync(id, cancellationToken: cancellation);
 
 		List<Result> results = [];
+
+		if (!SystemHelper.CheckAdministratorPrivileges())
+			results.Add(ResultFactory.AdminWarningBanner);
+
 		foreach (var pkg in packages)
 			results.Add(_resultFactory.Uninstallable(pkg));
 
@@ -63,6 +78,9 @@ internal class PackageOperations(WinGetPackageManager packageManager, ResultFact
 
 		if (packages.Count == 0)
 			return ResultFactory.NoResults;
+
+		if (!SystemHelper.CheckAdministratorPrivileges())
+			results.Add(ResultFactory.AdminWarningBanner);
 
 		foreach (var pkg in packages)
 			results.Add(_resultFactory.Upgradable(pkg));

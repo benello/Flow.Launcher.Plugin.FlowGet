@@ -24,6 +24,10 @@
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
           <Link>assets\icon.png</Link>
         </Content>
+        <Content Include="Images\*">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <Link>Images\%(Filename)%(Extension)</Link>
+        </Content>
         <Content Include="plugin.json">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
