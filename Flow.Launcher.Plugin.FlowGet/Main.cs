@@ -27,7 +27,8 @@ public class FlowGet
 			throw new InvalidOperationException("Winget is not installed");
 
 		var ui = new UiExecutor(_context.API, PluginName);
-		var resultFactory = new ResultFactory(ui, packageManager);
+		var scoreCalculator = new SimpleScoreCalculator();
+		var resultFactory = new ResultFactory(ui, packageManager, scoreCalculator);
 		_dispatcher = new CommandDispatcher(new PackageOperations(packageManager, resultFactory), resultFactory);
 
 		return Task.CompletedTask;
