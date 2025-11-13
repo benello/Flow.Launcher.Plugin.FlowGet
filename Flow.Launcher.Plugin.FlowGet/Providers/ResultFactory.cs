@@ -99,13 +99,15 @@ internal class ResultFactory(UiExecutor ui, WinGetPackageManager packageManager,
 				.WithTitle("Upgrade all upgradable packages")
 				.WithSubTitle("Runs winget upgrade for each package")
 				.WithAction(
-					ct => _packageManager.GetUpgradeablePackagesAsync(ct)
-						.ContinueWith(async listTask =>
-						{
-							foreach (var pkg in await listTask)
-								await _packageManager.UpgradePackageAsync(pkg, ct);
-							return true;
-						}, ct, TaskContinuationOptions.ExecuteSynchronously, TaskScheduler.Current).Unwrap(),
+					async ct =>
+					{
+						var successful = true;
+
+						foreach (var pkg in await _packageManager.GetUpgradeablePackagesAsync(ct))
+							successful &= await _packageManager.UpgradePackageAsync(pkg, ct);
+
+						return successful;
+					},
 					"All packages processed",
 					"Failed to upgrade all packages")
 				.WithIcon("Images/upgrade.png")
