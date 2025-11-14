@@ -4,7 +4,7 @@
   "Name": "FlowGet",
   "Description": "Easily manage your apps with Winget in one place.",
   "Author": "benello",
-  "Version": "1.1.0",
+  "Version": "1.1.1",
   "Language": "csharp",
   "Website": "https://github.com/benello/Flow.Launcher.Plugin.FlowGet",
   "IcoPath": "assets/icon.png",
