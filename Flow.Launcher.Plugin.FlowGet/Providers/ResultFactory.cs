@@ -46,7 +46,7 @@ internal class ResultFactory(UiExecutor ui, WinGetPackageManager packageManager,
 			.Build(),
 	];
 
-	public static Result AdminWarningBanner =>
+	public static readonly Result AdminWarningBanner =
 		ResultBuilder.Create()
 			.WithTitle("Administrator privileges may be required")
 			.WithSubTitle("Some operations may require elevated permissions to execute successfully")
@@ -110,6 +110,7 @@ internal class ResultFactory(UiExecutor ui, WinGetPackageManager packageManager,
 					},
 					"All packages processed",
 					"Failed to upgrade all packages")
+				.WithScore(int.MaxValue - 1)	// Warning needs to be always on top
 				.WithIcon("Images/upgrade.png")
 				.Build();
 	}

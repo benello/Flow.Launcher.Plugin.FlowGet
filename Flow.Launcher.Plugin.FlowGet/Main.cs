@@ -21,6 +21,8 @@ public class FlowGet
 	public Task InitAsync(PluginInitContext context)
 	{
 		_context = context;
+		_context.CurrentPluginMetadata.SearchDelayTime = 1000;
+
 		var packageManager = new WinGetPackageManager();
 
 		if (!packageManager.IsInstalled)

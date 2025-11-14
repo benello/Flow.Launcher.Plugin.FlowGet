@@ -16,13 +16,17 @@ internal class PackageOperations(WinGetPackageManager packageManager, ResultFact
 	{
 		if (string.IsNullOrEmpty(term))
 			return ResultFactory.EmptySearch;
+		
+		var packages = await _packageManager.SearchPackageAsync(term, cancellationToken: cancellation);
+
+		if (packages.Count == 0)
+			return ResultFactory.NoResults;
 
 		List<Result> results = [];
-
 		if (!SystemHelper.CheckAdministratorPrivileges())
 			results.Add(ResultFactory.AdminWarningBanner);
 
-		foreach (var pkg in await _packageManager.SearchPackageAsync(term, cancellationToken: cancellation))
+		foreach (var pkg in packages)
 			results.Add(_resultFactory.Installable(pkg));
 
 		return results;
@@ -34,15 +38,15 @@ internal class PackageOperations(WinGetPackageManager packageManager, ResultFact
 			return ResultFactory.EmptyInstall;
 
 		var pkg = (await _packageManager.SearchPackageAsync(id, true, cancellation)).FirstOrDefault();
-		var results = new List<Result>();
 
+		if (pkg is null)
+			return ResultFactory.NoResults;
+
+		var results = new List<Result>();
 		if (!SystemHelper.CheckAdministratorPrivileges())
 			results.Add(ResultFactory.AdminWarningBanner);
 
-		if (pkg is not null)
-			results.Add(_resultFactory.Installable(pkg));
-		else
-			results.Add(new Result { Title = "Package not found" });
+		results.Add(_resultFactory.Installable(pkg));
 
 		return results;
 	}
